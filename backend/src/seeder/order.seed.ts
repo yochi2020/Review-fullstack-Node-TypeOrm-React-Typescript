@@ -9,6 +9,7 @@ const ORDER_COUNT = 20;
 async function seed() {
   try {
     await AppDataSource.initialize();
+    // eslint-disable-next-line no-console
     console.log("Database connected for order seeding...");
 
     const orderRepository = AppDataSource.getRepository(Order);
@@ -25,7 +26,6 @@ async function seed() {
           email: faker.internet.email({ firstName, lastName }),
         }),
       );
-      console.log("🚀 ~ seed ~ order:", order);
 
       const items = Array.from({ length: randomInt(1, 6) }, () =>
         orderItemRepository.create({
@@ -39,8 +39,10 @@ async function seed() {
       await orderItemRepository.save(items);
     }
 
+    // eslint-disable-next-line no-console
     console.log(`Seeded ${ORDER_COUNT} orders successfully!`);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Error during order seeding:", error);
     process.exitCode = 1;
   } finally {

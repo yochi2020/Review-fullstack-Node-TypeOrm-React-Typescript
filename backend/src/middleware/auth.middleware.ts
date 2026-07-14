@@ -6,7 +6,6 @@ import { env } from "@configs/env.js";
 
 export const AuthenticatedMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    // เขียน logic ของ controller ที่นี่
     const jwt2 = req.cookies.jwt;
     const payload = jwt.verify(jwt2, env.SECRET_KEY);
 
@@ -19,7 +18,10 @@ export const AuthenticatedMiddleware = async (req: Request, res: Response, next:
 
     const repository = AppDataSource.getRepository(User);
 
-    req.user = await repository.findOneBy({ id: payload.id });
+    req.user = await repository.findOne({
+      where: { id: payload.id },
+      relations: { role: { permissions: true } },
+    });
     next();
   } catch (error) {
     res.status(500).json(error);

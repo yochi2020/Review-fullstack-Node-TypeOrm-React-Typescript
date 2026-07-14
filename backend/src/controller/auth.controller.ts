@@ -18,7 +18,7 @@ export const login = async (req: Request, res: Response) => {
 
 export const getCurrentUser = async (req: Request, res: Response) => {
   const user = await authService.getCurrentUser(req.user.id);
-  res.json(user);
+  res.json({ user });
 };
 
 export const logout = async (_req: Request, res: Response) => {

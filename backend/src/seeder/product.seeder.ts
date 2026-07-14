@@ -6,6 +6,7 @@ import { randomInt } from "node:crypto";
 async function seed() {
   try {
     await AppDataSource.initialize();
+    // eslint-disable-next-line no-console
     console.log("Database connected for seeding...");
 
     const productRepository = AppDataSource.getRepository(Product);
@@ -17,11 +18,12 @@ async function seed() {
         image: faker.image.dataUri(),
       }),
     );
-    console.log("🚀 ~ seed ~ products:", products);
 
     await productRepository.save(products);
+    // eslint-disable-next-line no-console
     console.log("Seeded 30 products successfully!");
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Error during product seeding:", error);
     process.exitCode = 1;
   } finally {

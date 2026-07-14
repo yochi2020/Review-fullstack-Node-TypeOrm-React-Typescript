@@ -8,6 +8,13 @@ export const listUsers = async (req: Request, res: Response) => {
   const page = parseInt(req.params.page as string);
   const limit = 10;
   const [result, total] = await repository.findAndCount({
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+      isActive: true,
+      email: true,
+    },
     skip: (page - 1) * limit,
     take: limit,
   });

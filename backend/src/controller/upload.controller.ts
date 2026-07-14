@@ -1,3 +1,4 @@
+import { env } from "@/configs/env.js";
 import type { Request, Response } from "express";
 import multer from "multer";
 import { extname } from "path";
@@ -16,6 +17,6 @@ export const upload = async (req: Request, res: Response) => {
     if (err) {
       return res.send(400).send(err);
     }
-    res.send({ url: "http://localhost:3001/" + req.file?.filename });
+    res.send({ url: `http://localhost:${env.PORT}/upload/` + req.file?.filename });
   });
 };

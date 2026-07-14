@@ -16,7 +16,7 @@ export const createRole = async (req: Request, res: Response) => {
 
   const tttt = await role.save({
     name,
-    permissions: await permission.map((id: any) => ({ id })),
+    permissions: await permission.map((id: number) => ({ id })),
   });
   res.json(tttt);
 };
@@ -39,7 +39,7 @@ export const updateRole = async (req: Request, res: Response) => {
   }
 
   role.name = name;
-  role.permissions = permission.map((id: any) => ({ id }));
+  role.permissions = permission.map((id: number) => ({ id }));
 
   const result = await repository.save(role);
   // const role = await repository.findOne({

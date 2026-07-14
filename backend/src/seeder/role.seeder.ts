@@ -6,6 +6,7 @@ import { Role } from "../entities/role.entity.js";
 async function seed() {
   try {
     await AppDataSource.initialize();
+    // eslint-disable-next-line no-console
     console.log("Database connected for seeding...");
 
     const permissionRepository = AppDataSource.getRepository(Permission);
@@ -23,11 +24,10 @@ async function seed() {
     ];
     const permissions: Permission[] = [];
 
-    for (let i = 0; i < perms.length; i++) {
-      const p: any = new Permission();
-      console.log(p);
-      p.name = perms[i];
-      permissions.push(await permissionRepository.save(p));
+    for (const permissionName of perms) {
+      const permission = new Permission();
+      permission.name = permissionName;
+      permissions.push(await permissionRepository.save(permission));
     }
 
     // TODO: เพิ่มการสร้าง Role เช่น Admin, Editor, Viewer
@@ -44,12 +44,14 @@ async function seed() {
     delete permissions[5];
     delete permissions[7];
     await roleRepository.save({ name: "Viewer", permissions });
+    // eslint-disable-next-line no-console
     console.log("Seeding completed successfully!");
     await AppDataSource.destroy();
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Error during seeding:", error);
   }
 }
 
-// เรียกใช้งานฟังก์ชัน
+// eslint-disable-next-line no-console
 seed().catch((error) => console.log(error));

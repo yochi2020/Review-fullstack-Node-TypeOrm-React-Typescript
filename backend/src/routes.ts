@@ -32,6 +32,8 @@ import {
   updateProduct,
 } from "./controller/product.controller.js";
 import { upload } from "./controller/upload.controller.js";
+import { order } from "./controller/order.controller.js";
+import { PermissionMiddleware } from "./middleware/permission.middleware.js";
 
 export const router = (router: Router) => {
   router.get("/test", controllerTest);
@@ -43,26 +45,53 @@ export const router = (router: Router) => {
   router.patch("/auth/me/profile", AuthenticatedMiddleware, updateCurrentUserProfile);
   router.patch("/auth/me/password", AuthenticatedMiddleware, updateCurrentUserPassword);
 
-  router.get("/users/:page", AuthenticatedMiddleware, listUsers);
-  router.post("/users", AuthenticatedMiddleware, createUser);
-  router.get("/users/id/:id", AuthenticatedMiddleware, getUser);
-  router.put("/users/:id", AuthenticatedMiddleware, updateUser);
-  router.delete("/users/:id", AuthenticatedMiddleware, deleteUser);
+  router.get("/users/:page", AuthenticatedMiddleware, PermissionMiddleware("users"), listUsers);
+  router.post("/users", AuthenticatedMiddleware, PermissionMiddleware("users"), createUser);
+  router.get("/users/id/:id", AuthenticatedMiddleware, PermissionMiddleware("users"), getUser);
+  router.put("/users/:id", AuthenticatedMiddleware, PermissionMiddleware("users"), updateUser);
+  router.delete("/users/:id", AuthenticatedMiddleware, PermissionMiddleware("users"), deleteUser);
 
   router.get("/permissions", AuthenticatedMiddleware, permission);
 
-  router.get("/roles", AuthenticatedMiddleware, roles);
-  router.post("/roles", AuthenticatedMiddleware, createRole);
-  router.get("/roles/:id", AuthenticatedMiddleware, getRole);
-  router.put("/roles/:id", AuthenticatedMiddleware, updateRole);
-  router.delete("/roles/:id", AuthenticatedMiddleware, deleteRole);
+  router.get("/roles", AuthenticatedMiddleware, PermissionMiddleware("roles"), roles);
+  router.post("/roles", AuthenticatedMiddleware, PermissionMiddleware("roles"), createRole);
+  router.get("/roles/:id", AuthenticatedMiddleware, PermissionMiddleware("roles"), getRole);
+  router.put("/roles/:id", AuthenticatedMiddleware, PermissionMiddleware("roles"), updateRole);
+  router.delete("/roles/:id", AuthenticatedMiddleware, PermissionMiddleware("roles"), deleteRole);
 
-  router.get("/products/:page", AuthenticatedMiddleware, listProducts);
-  router.post("/products", AuthenticatedMiddleware, createProduct);
-  router.get("/products/:id", AuthenticatedMiddleware, getProduct);
-  router.put("/products/:id", AuthenticatedMiddleware, updateProduct);
-  router.delete("/products/:id", AuthenticatedMiddleware, deleteProduct);
+  router.get(
+    "/products/list/:page",
+    AuthenticatedMiddleware,
+    PermissionMiddleware("products"),
+    listProducts,
+  );
+  router.post(
+    "/products",
+    AuthenticatedMiddleware,
+    PermissionMiddleware("products"),
+    createProduct,
+  );
+  router.get(
+    "/products/id/:id",
+    AuthenticatedMiddleware,
+    PermissionMiddleware("products"),
+    getProduct,
+  );
+  router.put(
+    "/products/:id",
+    AuthenticatedMiddleware,
+    PermissionMiddleware("products"),
+    updateProduct,
+  );
+  router.delete(
+    "/products/:id",
+    AuthenticatedMiddleware,
+    PermissionMiddleware("products"),
+    deleteProduct,
+  );
 
   router.post("/upload", AuthenticatedMiddleware, upload);
-  router.use("/", express.static("uploads")); //ให้domainข้างนอกเข้ามาดูไฟล์รูปได้
+  router.use("/upload", express.static("uploads")); //ให้domainข้างนอกเข้ามาดูไฟล์รูปได้
+
+  router.get("/order/list/:page", AuthenticatedMiddleware, PermissionMiddleware("orders"), order);
 };

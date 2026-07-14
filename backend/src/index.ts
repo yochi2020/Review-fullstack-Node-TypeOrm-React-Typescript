@@ -28,10 +28,9 @@ async function startServer() {
     await AppDataSource.initialize();
     // eslint-disable-next-line no-console
     console.error("Data Source has been initialized!");
-
-    app.listen(3001, () => {
+    app.listen(process.env.PORT, () => {
       // eslint-disable-next-line no-console
-      console.error("server is running on port 3001");
+      console.error(`server is running on port ${process.env.PORT}`);
     });
   } catch (error) {
     // eslint-disable-next-line no-console
