@@ -18,3 +18,13 @@ export type RegisterPayload = LoginPayload & {
   lastName: string;
   password_confirm: string;
 };
+
+export type UpdateProfilePayload = Pick<
+  CurrentUser,
+  "firstName" | "lastName" | "email"
+>;
+
+export type UpdatePasswordPayload = {
+  password: string;
+  password_confirm: string;
+};

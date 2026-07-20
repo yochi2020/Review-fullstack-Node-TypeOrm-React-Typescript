@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { deleteRole, listRoles } from "../features/roles/api";
-import type { Role as RoleModel } from "../features/roles/types";
-import { getErrorMessage } from "../shared/api/getErrorMessage";
-import { AlertMessage } from "../shared/components/AlertMessage";
-import { DashboardPage } from "../shared/components/DashboardPage";
-import { PageHeader } from "../shared/components/PageHeader";
+import { deleteRole, listRoles } from "../../features/roles/api";
+import type { Role as RoleModel } from "../../features/roles/types";
+import { getErrorMessage } from "../../shared/api/getErrorMessage";
+import { AlertMessage } from "../../shared/components/AlertMessage";
+import { DashboardPage } from "../../shared/components/DashboardPage";
+import { PageHeader } from "../../shared/components/PageHeader";
 
 function RoleList() {
   const navigate = useNavigate();

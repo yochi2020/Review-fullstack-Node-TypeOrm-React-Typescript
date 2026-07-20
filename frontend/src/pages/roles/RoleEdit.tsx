@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getRole, listPermissions, updateRole } from "../features/roles/api";
-import { RoleForm } from "../features/roles/components/RoleForm";
-import type { Permission } from "../features/roles/types";
-import { getErrorMessage } from "../shared/api/getErrorMessage";
-import { AlertMessage } from "../shared/components/AlertMessage";
-import { DashboardPage } from "../shared/components/DashboardPage";
-import { PageHeader } from "../shared/components/PageHeader";
+import { getRole, listPermissions, updateRole } from "../../features/roles/api";
+import { RoleForm } from "../../features/roles/components/RoleForm";
+import type { Permission } from "../../features/roles/types";
+import { getErrorMessage } from "../../shared/api/getErrorMessage";
+import { AlertMessage } from "../../shared/components/AlertMessage";
+import { DashboardPage } from "../../shared/components/DashboardPage";
+import { PageHeader } from "../../shared/components/PageHeader";
 
 function RoleEdit() {
   const { id } = useParams<{ id: string }>();

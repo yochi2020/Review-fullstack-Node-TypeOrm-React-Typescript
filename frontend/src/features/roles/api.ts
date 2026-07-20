@@ -21,7 +21,7 @@ export function createRole(payload: RolePayload) {
 }
 
 export function updateRole(id: string, payload: RolePayload) {
-  return apiClient.put(`/roles/${id}`, payload);
+  return apiClient.patch(`/roles/${id}`, payload);
 }
 
 export function deleteRole(id: number) {

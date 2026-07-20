@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createRole, listPermissions } from "../features/roles/api";
-import { RoleForm } from "../features/roles/components/RoleForm";
-import type { Permission } from "../features/roles/types";
-import { getErrorMessage } from "../shared/api/getErrorMessage";
-import { AlertMessage } from "../shared/components/AlertMessage";
-import { DashboardPage } from "../shared/components/DashboardPage";
-import { PageHeader } from "../shared/components/PageHeader";
+import { createRole, listPermissions } from "../../features/roles/api";
+import { RoleForm } from "../../features/roles/components/RoleForm";
+import type { Permission } from "../../features/roles/types";
+import { getErrorMessage } from "../../shared/api/getErrorMessage";
+import { AlertMessage } from "../../shared/components/AlertMessage";
+import { DashboardPage } from "../../shared/components/DashboardPage";
+import { PageHeader } from "../../shared/components/PageHeader";
 
 function RoleCreate() {
   const navigate = useNavigate();

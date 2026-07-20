@@ -2,23 +2,25 @@ import { apiClient } from "../../shared/api/client";
 import type { User } from "./types";
 
 export async function listUsers(): Promise<User[]> {
-  const { data } = await apiClient.get<User[]>("/users");
-  return data;
+  const { data } = await apiClient.get<{ result: User[] }>("/user", {
+    params: { page: 1 },
+  });
+  return data.result;
 }
 
 export async function getUser(id: string): Promise<User> {
-  const { data } = await apiClient.get<User>(`/users/${id}`);
+  const { data } = await apiClient.get<User>(`/user/${id}`);
   return data;
 }
 
 export function createUser(payload: object) {
-  return apiClient.post("/users", payload);
+  return apiClient.post("/user", payload);
 }
 
 export function updateUser(id: string, payload: object) {
-  return apiClient.put(`/users/${id}`, payload);
+  return apiClient.patch(`/user/${id}`, payload);
 }
 
 export function deleteUser(id: number) {
-  return apiClient.delete(`/users/${id}`);
+  return apiClient.delete(`/user/${id}`);
 }

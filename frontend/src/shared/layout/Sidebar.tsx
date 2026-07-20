@@ -5,6 +5,7 @@ const navItems = [
   ["people", "Users", "/user"],
   ["person-gear", "Roles", "/role"],
   ["box-seam", "Products", "/product"],
+  ["box-seam", "Order", "/order"],
 ] as const;
 
 function Icon({ name }: { name: string }) {
