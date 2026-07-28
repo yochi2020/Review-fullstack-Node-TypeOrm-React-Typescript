@@ -3,9 +3,22 @@ import { Product } from "@/entities/product.entity.js";
 import type { Request, Response } from "express";
 
 const repository = AppDataSource.getRepository(Product);
+type ProductParams = { productId: string };
+
+const parseProductId = (req: Request<ProductParams>, res: Response) => {
+  const productId = Number(req.params.productId);
+
+  if (!Number.isInteger(productId) || productId <= 0) {
+    res.status(400).json({ message: "Invalid product id" });
+    return null;
+  }
+
+  return productId;
+};
 
 export const listProducts = async (req: Request, res: Response) => {
-  const page = parseInt(req.params.page as string);
+  const requestedPage = Number.parseInt(String(req.query.page ?? "1"), 10);
+  const page = Number.isNaN(requestedPage) ? 1 : Math.max(1, requestedPage);
   const limit = 10;
   const [result, total] = await repository.findAndCount({
     skip: (page - 1) * limit,
@@ -17,7 +30,7 @@ export const listProducts = async (req: Request, res: Response) => {
     meta: {
       total,
       page,
-      last_page: Math.ceil(total / page),
+      last_page: Math.ceil(total / limit),
     },
   });
 };
@@ -27,10 +40,13 @@ export const createProduct = async (req: Request, res: Response) => {
   res.status(201).json(result);
 };
 
-export const getProduct = async (req: Request<{ id: string }>, res: Response) => {
+export const getProduct = async (req: Request<ProductParams>, res: Response) => {
+  const productId = parseProductId(req, res);
+  if (productId === null) return;
+
   const result = await repository.findOne({
     where: {
-      id: Number(req.params.id),
+      id: productId,
     },
   });
 
@@ -42,11 +58,13 @@ export const getProduct = async (req: Request<{ id: string }>, res: Response) =>
   res.json(result);
 };
 
-export const updateProduct = async (req: Request<{ id: string }>, res: Response) => {
-  const id = Number(req.params.id);
+export const updateProduct = async (req: Request<ProductParams>, res: Response) => {
+  const productId = parseProductId(req, res);
+  if (productId === null) return;
+
   const product = await repository.findOne({
     where: {
-      id,
+      id: productId,
     },
   });
 
@@ -58,14 +76,17 @@ export const updateProduct = async (req: Request<{ id: string }>, res: Response)
   const result = await repository.save({
     ...product,
     ...req.body,
-    id,
+    id: productId,
   });
 
   res.json(result);
 };
 
-export const deleteProduct = async (req: Request<{ id: string }>, res: Response) => {
-  const result = await repository.delete(Number(req.params.id));
+export const deleteProduct = async (req: Request<ProductParams>, res: Response) => {
+  const productId = parseProductId(req, res);
+  if (productId === null) return;
+
+  const result = await repository.delete(productId);
 
   if (!result.affected) {
     res.status(404).json({ message: "Product not found" });

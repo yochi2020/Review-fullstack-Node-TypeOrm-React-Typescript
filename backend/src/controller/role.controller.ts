@@ -2,7 +2,20 @@ import { AppDataSource } from "@/configs/data-source.js";
 import { Role } from "@/entities/role.entity.js";
 import type { Request, Response } from "express";
 const repository = AppDataSource.getRepository(Role);
-export const roles = async (req: Request, res: Response) => {
+type RoleParams = { roleId: string };
+
+const parseRoleId = (req: Request<RoleParams>, res: Response) => {
+  const roleId = Number(req.params.roleId);
+
+  if (!Number.isInteger(roleId) || roleId <= 0) {
+    res.status(400).json({ message: "Invalid role id" });
+    return null;
+  }
+
+  return roleId;
+};
+
+export const roles = async (_req: Request, res: Response) => {
   // เขียน logic ของ controller ที่นี่
 
   res.json(await repository.find());
@@ -21,17 +34,30 @@ export const createRole = async (req: Request, res: Response) => {
   res.json(tttt);
 };
 
-export const getRole = async (req: Request, res: Response) => {
-  const result = await repository.find({ where: req.params, relations: { permissions: true } });
+export const getRole = async (req: Request<RoleParams>, res: Response) => {
+  const roleId = parseRoleId(req, res);
+  if (roleId === null) return;
+
+  const result = await repository.findOne({
+    where: { id: roleId },
+    relations: { permissions: true },
+  });
+
+  if (!result) {
+    return res.status(404).json({ message: "Role not found" });
+  }
+
   res.json(result);
 };
 
-export const updateRole = async (req: Request, res: Response) => {
+export const updateRole = async (req: Request<RoleParams>, res: Response) => {
   // เขียน logic ของ controller ที่นี่
   const { name, permission } = req.body;
+  const roleId = parseRoleId(req, res);
+  if (roleId === null) return;
 
   const role = await repository.findOne({
-    where: req.params,
+    where: { id: roleId },
     relations: { permissions: true },
   });
   if (!role) {
@@ -49,8 +75,16 @@ export const updateRole = async (req: Request, res: Response) => {
   res.json(result);
 };
 
-export const deleteRole = async (req: Request<{ id: string }>, res: Response) => {
+export const deleteRole = async (req: Request<RoleParams>, res: Response) => {
   // เขียน logic ของ controller ที่นี่
-  const result = await repository.delete(req.params.id);
+  const roleId = parseRoleId(req, res);
+  if (roleId === null) return;
+
+  const result = await repository.delete(roleId);
+
+  if (!result.affected) {
+    return res.status(404).json({ message: "Role not found" });
+  }
+
   res.json(result);
 };

@@ -6,24 +6,36 @@ import { env } from "@configs/env.js";
 
 export const AuthenticatedMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const jwt2 = req.cookies.jwt;
-    const payload = jwt.verify(jwt2, env.SECRET_KEY);
+    const token = req.cookies?.jwt;
 
-    if (!payload) {
-      return res.status(400).send({ message: "unauthenticated" });
+    if (!token) {
+      return res.status(401).json({ message: "Unauthenticated" });
     }
+
+    const payload = jwt.verify(token, env.SECRET_KEY);
+
     if (typeof payload === "string") {
       return res.status(401).json({ message: "Invalid token" });
     }
 
     const repository = AppDataSource.getRepository(User);
 
-    req.user = await repository.findOne({
+    const user = await repository.findOne({
       where: { id: payload.id },
       relations: { role: { permissions: true } },
     });
-    next();
+
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    req.user = user;
+    return next();
   } catch (error) {
-    res.status(500).json(error);
+    if (error instanceof jwt.JsonWebTokenError) {
+      return res.status(401).json({ message: "Invalid or expired token" });
+    }
+
+    return next(error);
   }
 };

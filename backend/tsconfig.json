@@ -7,6 +7,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@controllers/*": ["./src/controller/*"],
+      "@middleware/*": ["./src/middleware/*"],
       "@validations/*": ["./src/validation/*"],
       "@entities/*": ["./src/entities/*"],
       "@configs/*": ["./src/configs/*"],

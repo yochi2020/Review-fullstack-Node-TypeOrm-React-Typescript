@@ -5,7 +5,8 @@ import { User } from "@/entities/user.entity.js";
 
 export const listUsers = async (req: Request, res: Response) => {
   const repository = AppDataSource.getRepository(User);
-  const page = parseInt(req.params.page as string);
+  const requestedPage = Number.parseInt(String(req.query.page ?? "1"), 10);
+  const page = Number.isNaN(requestedPage) ? 1 : Math.max(1, requestedPage);
   const limit = 10;
   const [result, total] = await repository.findAndCount({
     select: {
@@ -23,7 +24,7 @@ export const listUsers = async (req: Request, res: Response) => {
     meta: {
       total,
       page,
-      last_page: Math.ceil(total / page),
+      last_page: Math.ceil(total / limit),
     },
   });
 };
@@ -35,20 +36,20 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const getUser = async (
   req: Request<{
-    id: string;
+    userId: string;
   }>,
   res: Response,
 ) => {
-  const result = await userService.getUserById(Number(req.params.id));
+  const result = await userService.getUserById(Number(req.params.userId));
   res.json(result);
 };
 
-export const updateUser = async (req: Request<{ id: string }>, res: Response) => {
-  const result = await userService.updateUserById(Number(req.params.id), req.body);
+export const updateUser = async (req: Request<{ userId: string }>, res: Response) => {
+  const result = await userService.updateUserById(Number(req.params.userId), req.body);
   res.json(result);
 };
 
-export const deleteUser = async (req: Request<{ id: string }>, res: Response) => {
-  const result = await userService.deleteUserById(Number(req.params.id));
+export const deleteUser = async (req: Request<{ userId: string }>, res: Response) => {
+  const result = await userService.deleteUserById(Number(req.params.userId));
   res.json(result);
 };

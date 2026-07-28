@@ -6,8 +6,7 @@
   },
   "eslint.useFlatConfig": true,
   "eslint.workingDirectories": [{ "mode": "auto" }],
+  "js/ts.tsdk.path": "frontend/node_modules/typescript/lib",
   "files.eol": "\n",
-  "[snippets]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
-  }
+  "[snippets]": {}
 }

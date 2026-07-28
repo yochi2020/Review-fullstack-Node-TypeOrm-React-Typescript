@@ -1,0 +1,14 @@
+# การตั้งค่า Codex เฉพาะโปรเจกต์
+# Codex จะโหลดไฟล์นี้เมื่อ Repository ถูกกำหนดให้เป็น trusted project แล้วเท่านั้น
+
+# ขออนุญาตก่อนดำเนินการที่ต้องใช้สิทธิ์เกินขอบเขตของ sandbox ปัจจุบัน
+approval_policy = "on-request"
+
+# อนุญาตให้แก้ไขภายใน Repository นี้ และป้องกัน path ที่อยู่ภายนอก
+sandbox_mode = "workspace-write"
+
+# ใช้ระดับการคิดที่ละเอียดขึ้น โดยไม่ล็อก Repository ไว้กับโมเดลใดโมเดลหนึ่ง
+model_reasoning_effort = "high"
+
+# ใช้ indexed cache ของ OpenAI เป็นหลัก เว้นแต่งานต้องการข้อมูลล่าสุดแบบ live อย่างชัดเจน
+web_search = "cached"
