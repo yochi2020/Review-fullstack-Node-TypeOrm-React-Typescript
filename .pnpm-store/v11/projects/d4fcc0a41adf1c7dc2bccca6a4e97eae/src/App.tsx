@@ -21,7 +21,12 @@ const Order = lazy(() => import('./pages/orders/index'));
 function App() {
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Suspense fallback={<div className="d-flex min-vh-100 align-items-center justify-content-center">Loading...</div>}>
           <Routes>
             <Route element={<AppLayout />}>

@@ -3,8 +3,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { getCurrentUser, logout } from "../../features/auth/api";
 import type { CurrentUser } from "../../features/auth/types";
 import type { Dispatch, SetStateAction } from "react";
-import { User } from "../../features/users/types";
-import { setUser } from "../../redux/actions/setUserAction"
+
 export type AppLayoutContext = {
   user: CurrentUser;
   setUser: Dispatch<SetStateAction<CurrentUser | null>>;
@@ -100,16 +99,4 @@ export default function AppLayout() {
       <Outlet context={{ user, setUser }} />
     </>
   );
-
-  const mapStateToProps = (state: { user: User }) => {
-    return {
-      user: state.user
-    }
-  }
-
-  const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-    return {
-      setUser: (user: User) => dispatch(setUser(user))
-    }
-  }
 }
