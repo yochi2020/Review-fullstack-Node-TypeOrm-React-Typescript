@@ -36,7 +36,9 @@ export const createRole = async (req: Request, res: Response) => {
 
 export const getRole = async (req: Request<RoleParams>, res: Response) => {
   const roleId = parseRoleId(req, res);
-  if (roleId === null) return;
+  if (roleId === null) {
+    return;
+  }
 
   const result = await repository.findOne({
     where: { id: roleId },
@@ -54,7 +56,9 @@ export const updateRole = async (req: Request<RoleParams>, res: Response) => {
   // เขียน logic ของ controller ที่นี่
   const { name, permission } = req.body;
   const roleId = parseRoleId(req, res);
-  if (roleId === null) return;
+  if (roleId === null) {
+    return;
+  }
 
   const role = await repository.findOne({
     where: { id: roleId },
@@ -78,7 +82,9 @@ export const updateRole = async (req: Request<RoleParams>, res: Response) => {
 export const deleteRole = async (req: Request<RoleParams>, res: Response) => {
   // เขียน logic ของ controller ที่นี่
   const roleId = parseRoleId(req, res);
-  if (roleId === null) return;
+  if (roleId === null) {
+    return;
+  }
 
   const result = await repository.delete(roleId);
 

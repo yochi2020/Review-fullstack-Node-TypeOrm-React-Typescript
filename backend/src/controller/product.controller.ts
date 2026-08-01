@@ -42,7 +42,9 @@ export const createProduct = async (req: Request, res: Response) => {
 
 export const getProduct = async (req: Request<ProductParams>, res: Response) => {
   const productId = parseProductId(req, res);
-  if (productId === null) return;
+  if (productId === null) {
+    return;
+  }
 
   const result = await repository.findOne({
     where: {
@@ -60,7 +62,9 @@ export const getProduct = async (req: Request<ProductParams>, res: Response) => 
 
 export const updateProduct = async (req: Request<ProductParams>, res: Response) => {
   const productId = parseProductId(req, res);
-  if (productId === null) return;
+  if (productId === null) {
+    return;
+  }
 
   const product = await repository.findOne({
     where: {
@@ -84,7 +88,9 @@ export const updateProduct = async (req: Request<ProductParams>, res: Response) 
 
 export const deleteProduct = async (req: Request<ProductParams>, res: Response) => {
   const productId = parseProductId(req, res);
-  if (productId === null) return;
+  if (productId === null) {
+    return;
+  }
 
   const result = await repository.delete(productId);
 
